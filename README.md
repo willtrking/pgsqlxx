@@ -13,6 +13,10 @@ I make a point of commenting a link to the the exact line and commit in Github t
 struct attributes / functions being private to the sqlx package. If they are ever made public, or have some way to 
 publicly interop with them, these reimplementations wouldn't be necessary.
 
+## Naming of functions
+
+Any function suffixed with `x` represents functionality achieved through sqlx, OR new functionality implemented in this library. Any function suffixed with `xx` represents a function in pgx that is also suffixed with `x`
+
 ## Status
 
 VERY much a work in progress. 
