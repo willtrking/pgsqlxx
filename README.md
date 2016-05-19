@@ -11,7 +11,7 @@ sqlx and pgx are both great libraries, and having some of the sqlx functionality
 Whenever I reimplement (read: pretty much copy paste) sqlx functionality in this library, 
 I make a point of commenting a link to the the exact line and commit in Github the code block is coming from. This is mostly caused by certain 
 struct attributes / functions being private to the sqlx package. If they are ever made public, or have some way to 
-publicly interop with them, these reimplementations wouldn't be necessary.
+publicly interop with them, these reimplementations won't be necessary.
 
 ## Naming of functions
 
