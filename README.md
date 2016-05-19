@@ -4,7 +4,7 @@ This is simply an attempt to have https://github.com/jmoiron/sqlx and https://gi
 
 ## Why?
 
-sqlx and pgx are both great libraries, and having some of the sqlx functionality work directly with pgx makes using pgx specific funtionality possible, as well as leading to improved performance (hopefully?)
+sqlx and pgx are both great libraries, and having some of the sqlx functionality work directly with pgx makes using pgx specific funtionality simpler/possible, as well as leading to improved performance (hopefully?)
 
 ## Reimplementation of sqlx
 
