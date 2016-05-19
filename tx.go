@@ -5,6 +5,16 @@ import (
 	"github.com/jmoiron/sqlx/reflectx"
 )
 
+// Allow easy access to pgsqlxx Tx without needing to use the rest of the library
+func TxFromTx(tx *pgx.Tx, mapper *reflectx.Mapper) *Tx {
+	return &Tx{Tx: tx, unsafe: false, Mapper: mapper}
+}
+
+// Allow easy access to pgsqlxx Tx without needing to use the rest of the library
+func TxFromTxUnsafe(tx *pgx.Tx, mapper *reflectx.Mapper) *Tx {
+	return &Tx{Tx: tx, unsafe: true, Mapper: mapper}
+}
+
 type Tx struct {
 	*pgx.Tx
 	unsafe bool
@@ -18,14 +28,31 @@ func (t *Tx) Queryx(query string, args ...interface{}) (*Rows, error) {
 		return nil, err
 	}
 
-	return &Rows{Rows: rows, unsafe: t.unsafe, Mapper: t.Mapper}, nil
+	r := RowsFromRows(rows, t.Mapper)
+	r.unsafe = t.unsafe
+
+	return r, nil
 }
 
 func (t *Tx) QueryRowx(query string, args ...interface{}) *Row {
 	rows, err := t.Queryx(query, args...)
-	return &Row{Rows: rows, err: err, unsafe: t.unsafe, Mapper: t.Mapper}
+
+	r := RowFromRowsx(rows, t.Mapper)
+	r.unsafe = t.unsafe
+	r.err = err
+
+	return r
 }
 
 func (t *Tx) Rebind(query string) string {
 	return Rebind(query)
+}
+
+func (t *Tx) Execx(sql string, args ...interface{}) *Result {
+	return ResultFromExec(t.Exec(sql, args...))
+}
+
+func (t *Tx) Unsafe() *Tx {
+	t.unsafe = true
+	return t
 }

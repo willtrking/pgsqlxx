@@ -88,12 +88,20 @@ func (c *Connxx) Queryx(query string, args ...interface{}) (*Rows, error) {
 		return nil, err
 	}
 
-	return &Rows{Rows: rows, unsafe: c.unsafe, Mapper: c.Mapper}, nil
+	r := RowsFromRows(rows, c.Mapper)
+	r.unsafe = c.unsafe
+
+	return r, nil
 }
 
 func (c *Connxx) QueryRowx(query string, args ...interface{}) *Row {
 	rows, err := c.Queryx(query, args...)
-	return &Row{Rows: rows, err: err, unsafe: c.unsafe, Mapper: c.Mapper}
+
+	r := RowFromRowsx(rows, c.Mapper)
+	r.unsafe = c.unsafe
+	r.err = err
+
+	return r
 }
 
 func (c *Connxx) Rebind(query string) string {
@@ -107,5 +115,12 @@ func (c *Connxx) Beginx() (*Tx, error) {
 		return nil, err
 	}
 
-	return &Tx{Tx: tx, unsafe: c.unsafe, Mapper: c.Mapper}, nil
+	t := TxFromTx(tx, c.Mapper)
+	t.unsafe = c.unsafe
+
+	return t, nil
+}
+
+func (c *Connxx) Execx(sql string, args ...interface{}) *Result {
+	return ResultFromExec(c.Exec(sql, args...))
 }

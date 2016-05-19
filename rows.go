@@ -10,6 +10,23 @@ import (
 	"github.com/jmoiron/sqlx/reflectx"
 )
 
+// Allow easy access to pgsqlxx Rows without needing to use the rest of the library
+func RowsFromRows(rows *pgx.Rows, mapper *reflectx.Mapper) *Rows {
+	return &Rows{
+		Rows:   rows,
+		Mapper: mapper,
+	}
+}
+
+// Allow easy access to pgsqlxx Rows without needing to use the rest of the library
+func RowsFromRowsUnsafe(rows *pgx.Rows, mapper *reflectx.Mapper) *Rows {
+	return &Rows{
+		Rows:   rows,
+		unsafe: true,
+		Mapper: mapper,
+	}
+}
+
 type Rows struct {
 	*pgx.Rows
 	Mapper *reflectx.Mapper
