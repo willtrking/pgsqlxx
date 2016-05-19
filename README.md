@@ -1,6 +1,6 @@
 # pgsqlxx
 
-This is simply an attempt to have Pgx and Sqlx interop together directly, rather then through pgx/stdlib. Unfortunately some of sqlx needs to be reimplemented in order to achieve this, but ideally this will be kept to a minimum.
+This is simply an attempt to have https://github.com/jmoiron/sqlx and https://github.com/jackc/pgx interop together directly, rather then through pgx/stdlib. Unfortunately some of sqlx needs to be reimplemented in order to achieve this, but ideally this will be kept to a minimum.
 
 ## Why?
 
