@@ -23,4 +23,4 @@ VERY much a work in progress.
 
 ## Thanks
 
-BIG THANKS to the authors of both pgx and sqlx. This would not be possible without them.
+BIG THANKS to the authors of both pgx (https://github.com/jackc) and sqlx (https://github.com/jmoiron). This would not be possible without them.
