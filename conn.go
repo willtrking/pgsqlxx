@@ -72,6 +72,10 @@ type Connxx struct {
 	Mapper *reflectx.Mapper
 }
 
+func (c *Connxx) DriverName() string {
+	return "pgx"
+}
+
 func (c *Connxx) Unsafe() *Connxx {
 	c.unsafe = true
 	return c
@@ -121,6 +125,46 @@ func (c *Connxx) Beginx() (*Tx, error) {
 	return t, nil
 }
 
-func (c *Connxx) Execx(sql string, args ...interface{}) *Result {
-	return ResultFromExec(c.Exec(sql, args...))
+func (c *Connxx) Execx(sql string, args ...interface{}) (*Result, error) {
+	r, err := c.Exec(sql, args...)
+	if err != nil {
+		return nil, err
+	}
+	return ResultFromCommandTag(r), nil
+}
+
+func (c *Connxx) IsTx() bool {
+	return false
+}
+
+type Preparer interface {
+	Prepare(string, string) (*pgx.PreparedStatement, error)
+	PrepareEx(string, string, *pgx.PrepareExOptions) (*pgx.PreparedStatement, error)
+}
+
+type TxChecker interface {
+	IsTx() bool
+}
+
+type Queryer interface {
+	Query(string, ...interface{}) (*pgx.Rows, error)
+	QueryRow(string, ...interface{}) *pgx.Row
+	Queryx(string, ...interface{}) (*Rows, error)
+	QueryRowx(string, ...interface{}) *Row
+}
+
+type Execer interface {
+	Exec(string, ...interface{}) (pgx.CommandTag, error)
+	Execx(string, ...interface{}) (*Result, error)
+}
+
+type Binder interface {
+	Rebind(string) string
+}
+
+type Ext interface {
+	Preparer
+	Queryer
+	Execer
+	Binder
 }

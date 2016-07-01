@@ -15,8 +15,11 @@ func fieldsByTraversal(v reflect.Value, traversals [][]int, values []interface{}
 	}
 
 	for i, traversal := range traversals {
+
 		if len(traversal) == 0 {
-			values[i] = new(interface{})
+			// Modification for pgx
+			// See https://github.com/jackc/pgx/issues/130
+			values[i] = nil
 			continue
 		}
 		f := reflectx.FieldByIndexes(v, traversal)
