@@ -109,6 +109,10 @@ func (r *Row) Scan(dest ...interface{}) error {
 
 func (r *Row) StructScan(dest interface{}) error {
 
+	if r.err != nil {
+		return r.err
+	}
+
 	v := reflect.ValueOf(dest)
 
 	if v.Kind() != reflect.Ptr {
@@ -125,6 +129,7 @@ func (r *Row) StructScan(dest interface{}) error {
 		m := r.Mapper
 
 		r.fields = m.TraversalsByName(v.Type(), columns)
+
 		// if we are not unsafe and are missing fields, return an error
 		if !r.unsafe {
 			if f, err := missingFields(r.fields); err != nil {

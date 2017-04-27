@@ -47,6 +47,7 @@ func (r *Rows) SliceScan() ([]interface{}, error) {
 
 // From https://github.com/jmoiron/sqlx/blob/398dd5876282499cdfd4cb8ea0f31a672abe9495/sqlx.go#L560
 func (r *Rows) StructScan(dest interface{}) error {
+
 	rowErr := r.Err()
 	if rowErr != nil {
 		return rowErr
@@ -66,6 +67,7 @@ func (r *Rows) StructScan(dest interface{}) error {
 		if err != nil {
 			return err
 		}
+
 		m := r.Mapper
 
 		r.fields = m.TraversalsByName(v.Type(), columns)
